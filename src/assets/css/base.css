@@ -1,0 +1,8 @@
+@import "./normalize.css";
+:root{
+	--color-text:#ffffff;
+  --color-lint:#f84a72;
+}
+body{
+/* 	color:var(--color-text); */
+}
