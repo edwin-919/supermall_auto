@@ -5,7 +5,7 @@
       <p>直接使用别名防止文件移动时路径错乱问题，dom标签内使用别名要加~符号</p>
     </div>
 
-    <Tabbar>
+    <Tabbar class="main-bar">
       <tabbarItem path='/first' activeColor='blue'>
         <img slot="icon" src="~assets/img/down.png" >
         <img slot="cur-icon" src="~assets/img/a3.jpg" >
@@ -43,4 +43,7 @@
 </script>
 
 <style>
+  .main-bar{
+    z-index: 9;
+  }
 </style>

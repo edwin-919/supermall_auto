@@ -2,6 +2,7 @@
 :root{
 	--color-text:#ffffff;
   --color-lint:#f84a72;
+  --color-high:#ff557f;
 }
 body{
 /* 	color:var(--color-text); */

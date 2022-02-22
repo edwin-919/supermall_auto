@@ -2,7 +2,7 @@ import axios from 'axios'
 const request1=function(config){
   //一、实例化axios使默认属性可以根据情况调用不同的instance
   const instance=axios.create({
-    baseURL:'http://123.207.32.32:8000',
+    baseURL:'http://152.136.185.210:7878/api/hy66/',
     timeout:5000
   })
   //二、拦截器
