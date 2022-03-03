@@ -1,19 +1,21 @@
 <template>
   <div id="app">
     <main-tagbar></main-tagbar>
-    <router-view></router-view>
+    <keep-alive exclude="Detail"><router-view></router-view></keep-alive>
   </div>
 </template>
 
 <script>
 import mainTagbar from 'components/content/mainTabbar'
 import router from './router'
+import store from './store'
 export default {
   name: 'App',
   components: {
     mainTagbar
   },
-  router
+  router,
+  store
 }
 </script>
 

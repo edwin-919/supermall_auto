@@ -1,10 +1,5 @@
 <template>
   <div>
-    <div style="border: solid;">
-      <p>路径问题：build/webpack.base.conf.js -->resolve:alias --改别名</p>
-      <p>直接使用别名防止文件移动时路径错乱问题，dom标签内使用别名要加~符号</p>
-    </div>
-
     <Tabbar class="main-bar">
       <tabbarItem path='/first' activeColor='blue'>
         <img slot="icon" src="~assets/img/down.png" >
@@ -19,7 +14,7 @@
       <tabbarItem path='/third'>
         <img slot="icon" src="~assets/img/yinfu.png" >
         <img slot="cur-icon" src="~assets/img/dua.jpg" >
-        <div slot="text">食品</div>
+        <div slot="text">购物车</div>
       </tabbarItem>
       <tabbarItem path='/fourth' activeColor='yellow'>
         <img slot="icon" src="~assets/img/yinyue.jpg" >
@@ -44,6 +39,8 @@
 
 <style>
   .main-bar{
-    z-index: 9;
-  }
+    position: relative;
+    background-color: #fff;
+    z-index: 1;
+ }
 </style>

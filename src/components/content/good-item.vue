@@ -1,6 +1,6 @@
 <template>
-  <div class="good-item">
-    <img :src="gooditem.show.img" @load="imgload">
+  <div class="good-item" @click="ItemClick">
+    <img v-lazy="ShowImage" @load="imgload">
     <div class="good-info">
     <p class="good-title">{{gooditem.title}}</p>
     <span class="good-price">{{gooditem.price}}</span>
@@ -22,7 +22,21 @@
     },
     methods:{
       imgload(){
+        // 判断路由向正确的路由发送事件
+        // if(this.$route.path.indexOf('/home')){
+        //   this.$bus.$emit('imgload')
+        // } else if(this.$route.path.indexof('/detail')){
+        //   this.$bus.$emit('detailImgLoad')
+        // }
         this.$bus.$emit('imgload')
+      },
+      ItemClick(){
+        this.$router.push('./detail/'+this.gooditem.iid)
+      }
+    },
+    computed:{
+      ShowImage(){
+        return this.gooditem.image || this.gooditem.show.img
       }
     }
   }

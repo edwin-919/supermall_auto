@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper" ref="wrapper">
-    <div class="content">
+    <div class="scroll-content">
       <slot></slot>
     </div>
   </div>
@@ -25,6 +25,7 @@
       })
       // document.querySelector('.wrapper') 类有多个不好定位
       this.scroll.on('scroll',(position) => {
+        // console.log(position.y)
         this.$emit('scroll',position)
       })
       this.scroll.on('pullingUp',() => {
@@ -32,14 +33,18 @@
       })
     },
     methods:{
-      toTop(x,y,time=300){ //time=300 默认值
+      scrollTo(x,y,time=300){ //time=300 默认值
         this.scroll && this.scroll.scrollTo(x,y,time)
       },
       finishPullUp(){
         this.scroll && this.scroll.finishPullUp()
       },
       refresh(){
+        // console.log('---')
         this.scroll && this.scroll.refresh() /*this.scroll && 为this.scroll判空*/
+      },
+      getSaveY(){
+        return this.scroll.y ? this.scroll.y : 0
       }
     },
     props:{

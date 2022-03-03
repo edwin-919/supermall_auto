@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import First from 'views/first/first.vue'
-import Second from 'views/second/second.vue'
-import Third from 'views/third/third.vue'
-import Fourth from 'views/fourth/fourth.vue'
+const First = () => import('views/first/first')
+const Second =() => import('views/second/second')
+const Third = () => import('views/third/third')
+const Fourth = () => import('views/fourth/fourth')
+const Detail = () => import('views/detail/detail')
 Vue.use(Router)
 const routes=[
   {
@@ -25,6 +26,10 @@ const routes=[
   {
     path:'/fourth',
     component:Fourth
+  },
+  {
+    path:'/detail/:id',
+    component:Detail
   }
 ]
 export default new Router({

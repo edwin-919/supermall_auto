@@ -1,25 +1,18 @@
 <template>
-  <div id="first" class="wrapper"> <!-- 引用文件里的wrapper和content类用于设置样式 -->
+  <div id="first"> <!-- 引用文件里的wrapper和content类用于设置样式 -->
     <nav-bar class="fir-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll class="content" ref="scroll"
+    <tabctrl :title="['流行','风格','爆款']" @tabClick="TabClick" ref="tabCtrl1" v-show="isTabFix"></tabctrl>
+    <scroll class="wrapper" ref="scroll"
     :probe-type="3" :pull-up-load="true"
     @scroll="ScrollContent" @pullUp="LoadMore">
-      <home-swiper :banners="banners" class="home-swiper"></home-swiper>
+      <home-swiper :banners="banners" class="home-swiper" @swiperImgLoad="SwiperImgLoad"></home-swiper>
       <recommend :recommend="recommend"></recommend>
       <feature></feature>
-      <tabctrl :title="['流行','风格','爆款']" class="tab-ctrl" @tabClick="TabClick"></tabctrl>
+      <tabctrl :title="['流行','风格','爆款']" @tabClick="TabClick" ref="tabCtrl2" v-show="!isTabFix"></tabctrl>
       <goodlist :goods="showGoods"></goodlist>
     </scroll>
     <back-top @click.native="B2T()" v-show="isShowBack"></back-top>
     <router-view></router-view>
-   <div class="text">
-      <h1>first:CSS</h1>
-      <p>1.在APP写入dom和样式</p>
-      <p>2.加入背景色和阴影box-shadow：x y scope rgba();向上发散y取负值</p>
-      <p>3.display:flex--横向，子项目-flex:1--均匀分布</p>
-      <p>4.position:fixed;bottom:0;lef:0;right:0--置底</p>
-      <p>5.img->vertical-align:middle--去除图片默认边距</p>
-    </div>
   </div>
 </template>
 
@@ -32,9 +25,10 @@
   import Tabctrl from 'views/first/childComps/viewTabcontrol'
   import Goodlist from 'components/content/goodlist'
   import Scroll from 'components/common/Scroll/scroll'
-  import BackTop from 'components/common/backTop/backTop'
 
   import {getHomedata,getHomegoods} from 'network/home'
+  import {debounce} from 'common/utils'
+  import {ItemListenerMixin,BackTopMixin} from 'common/mixins'
 
   export default{
     name:'first',
@@ -46,7 +40,6 @@
       Tabctrl,
       Goodlist,
       Scroll,
-      BackTop
     },
     data(){
       return {
@@ -59,7 +52,9 @@
           'sell':{page:0,list:[]}
         },
         cur_type:'pop',
-        isShowBack:false
+        tabOffsetTop:0,
+        isTabFix:false,
+        PositionY:0,
       }
     },
     computed:{
@@ -67,6 +62,7 @@
         return this.goods[this.cur_type].list
       }
     },
+    mixins:[ItemListenerMixin,BackTopMixin],
     created(){
       this.getHomedata()
       this.getHomegoods('pop')
@@ -74,9 +70,19 @@
       this.getHomegoods('sell')
     },
     mounted(){ /* this.$refs在created中使用可能会未加载 */
-      this.$bus.$on('imgload', () => { /* $bus事件总线需要在main中定义$bus=new Vue(),从good-item发射 */
-        this.$refs.scroll.refresh()
-      })
+    },
+    destroyed(){
+      // console.log('destroyed')
+    },
+    activated(){
+      this.$refs.scroll.scrollTo(0,this.PositionY,0)
+      this.$refs.scroll.refresh()
+    },
+    deactivated(){
+      // 保存Y位置
+      this.PositionY = this.$refs.scroll.getSaveY()
+      // 取消事件,防止离开后子组件继续向此页面发送事件
+      this.$bus.$off('imgload',this.ItemListener)
     },
     methods:{
       TabClick(index){
@@ -88,17 +94,20 @@
           case 2:this.cur_type='sell'
           break;
         }
-      },
-      B2T(){
-        this.$refs.scroll.toTop(0,0)
+        this.$refs.tabCtrl1.curindex = index /* 防止置顶表单和原表单点击位置不一致 */
+        this.$refs.tabCtrl2.curindex = index
       },
       ScrollContent(position){
-        this.isShowBack = -position.y > 1000
+        this.ShowBacktop(position)
+        this.isTabFix = (-position.y) > (this.tabOffsetTop - 40)
       },
       LoadMore(){
         this.getHomegoods(this.cur_type)
         this.$refs.scroll.finishPullUp()
-
+      },
+      SwiperImgLoad(){
+        // console.log(this.$refs.tabCtrl2.$el.offsetTop)
+        this.tabOffsetTop = this.$refs.tabCtrl2.$el.offsetTop
       },
       getHomedata(){
         getHomedata().then(res => {
@@ -127,16 +136,16 @@
   .fir-nav{
     box-shadow: 1px 1px 1px rgba(100,100,100,.1);
     background-color: var(--color-lint);
+    position: relative;
+    z-index: 1;
   }
 
-  .tab-ctrl{
-    position: sticky; /* 根据位置选定是否为static或fixed属性 */
-    top:0px;
-    z-index: 9;
-  }
-.content{
+/* .tab-ctrl{
+    position: sticky;  /* 根据位置选定是否为static或fixed属性 *
+  } */
+.wrapper{
     overflow: hidden;
-    height:calc(100% - 207px);
+    height:calc(100% - 93px);
     }
      /* calc()运算符前后带空格 */
      /* 定位方法 */
