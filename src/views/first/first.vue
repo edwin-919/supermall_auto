@@ -22,7 +22,7 @@
   import homeSwiper from 'views/first/childComps/homeSwiper'
   import Recommend from 'views/first/childComps/viewRecommend'
   import Feature from 'views/first/childComps/viewFeature'
-  import Tabctrl from 'views/first/childComps/viewTabcontrol'
+  import Tabctrl from 'components/content/viewTabcontrol'
   import Goodlist from 'components/content/goodlist'
   import Scroll from 'components/common/Scroll/scroll'
 

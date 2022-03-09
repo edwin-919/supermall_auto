@@ -10,6 +10,7 @@ const request1=function(config){
   //可用于修改请求参数，显示请求状态图片，验证登录状态等
   instance.interceptors.request.use(
   config=> {
+    // console.log(config)
     return config  //不返回请求数据则无法进行请求操作
   },
     err=>{})

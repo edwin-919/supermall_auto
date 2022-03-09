@@ -9,7 +9,7 @@
       <tabbarItem path='/second' activeColor='green'>
         <img slot="icon" src="~assets/img/up.png" >
         <img slot="cur-icon" src="~assets/img/billie.jpg" >
-        <div slot="text">服饰</div>
+        <div slot="text">分类</div>
       </tabbarItem>
       <tabbarItem path='/third'>
         <img slot="icon" src="~assets/img/yinfu.png" >
